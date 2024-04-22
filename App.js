@@ -14,7 +14,7 @@ export default class App extends Component{
       nome:'',
       idade:'',
       sexo:0,
-      limite:0,
+      limite:250,
       estudante:false
 
 
@@ -23,17 +23,19 @@ export default class App extends Component{
   }
 
   entrar() {
-    let estudante = 'Não'
-    if (this.state.nome === '' || this.state.idade === '' || this.state.limite === 0) {
-      alert('Por favor preencha os campos: nome, idade, limite')
-    } else {
-      if (this.state.estudante === true) {
-        alert('Dados do usuário \n' + `nome: ${this.state.nome} \n` + `idade: ${this.state.idade.toString()} \n` + `limite: ${this.state.limite.toString()} \n` + 'Estudante: Sim')
-      } else {
-        alert('Dados do usuário \n' + `nome: ${this.state.nome} \n` + `idade: ${this.state.idade.toString()} \n` + `limite: ${this.state.limite.toString()} \n` + 'Estudante: Não')
-
-      }
+    if(this.state.nome === '' || this.state.idade === ''){
+      alert('Preencha todos dados corretamente!')
+      return;
     }
+
+    alert(
+        'Conta aberta com sucesso!! \n\n' +
+        'Nome: '+this.state.nome + '\n' +
+        'Idade: ' + this.state.idade + '\n' +
+        'Sexo: '+ this.state.sexos[this.state.sexo].sexo + ' \n' +
+        'Limite Conta: ' + this.state.limite.toFixed(2) + '\n' +
+        'Conta Estudante: ' + ((this.state.estudante)? 'Ativo' : 'Inativo')
+    );
   }
   render() {
     let sexoItem = this.state.sexos.map((v, key) => {
@@ -48,12 +50,12 @@ export default class App extends Component{
               <TextInput placeholder={'Digite seu Nome'} style={styles.input} onChangeText={(valorNome) => {this.setState({nome: valorNome})}}></TextInput>
               <TextInput placeholder={'Digite sua Idade'} style={styles.input} onChangeText={(valorIdade) => {this.setState({idade: valorIdade})}}></TextInput>
               <Picker selectedValue={this.state.sexo}
-                      onValueChange={(itemValue, itemIndex) => this.setState({sexo: itemValue})}>
+                      onValueChange={(itemValue) => this.setState({sexo: itemValue})}>
                 {sexoItem}
               </Picker>
               <View>
                 <Text>Seu limite: R${this.state.limite.toFixed(2)}</Text>
-                <Slider minimumValue={0} maximumValue={2000} onValueChange={(limiteSelecionado) => this.setState({limite: limiteSelecionado})} value={this.state.limite}/>
+                <Slider minimumValue={250} maximumValue={2000} onValueChange={(limiteSelecionado) => this.setState({limite: limiteSelecionado})} value={this.state.limite}/>
                 <Text style={{marginTop:15}}>Estudante</Text>
                 <Switch value={this.state.estudante} onValueChange={(valorSwitch) => {
                   this.setState({estudante: valorSwitch})
